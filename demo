@@ -1,0 +1,87 @@
+
+
+import React, { useState } from "react";
+import FlowCanvas from "./components/FlowCanvas";
+import { askAI, saveFlow } from "./services/api";
+
+function App() {
+  const [input, setInput] = useState("");
+  const [result, setResult] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const runFlow = async () => {
+    if (!input) return alert("Please enter a prompt");
+
+    setLoading(true);
+    const res = await askAI(input);
+    setResult(res.answer);
+    setLoading(false);
+  };
+
+  const handleSave = async () => {
+    if (!result) return alert("Run flow first!");
+
+    await saveFlow(input, result);
+    alert("Saved to DB");
+  };
+
+  return (
+    <div style={styles.container}>
+
+      <h2 style={styles.heading}>AI Flow App</h2>
+
+      <div style={styles.buttonContainer}>
+        <button onClick={runFlow} style={styles.runBtn}>
+          {loading ? "Running..." : "Run Flow"}
+        </button>
+
+        <button onClick={handleSave} style={styles.saveBtn}>
+          Save
+        </button>
+      </div>
+
+      <div style={styles.canvas}>
+        <FlowCanvas input={input} setInput={setInput} result={result} />
+      </div>
+
+    </div>
+  );
+}
+
+export default App;
+
+const styles = {
+  container: {
+    padding: 20,
+    textAlign: "center",
+    fontFamily: "Arial"
+  },
+  heading: {
+    marginBottom: 20
+  },
+  buttonContainer: {
+    marginBottom: 20
+  },
+  runBtn: {
+    padding: "10px 20px",
+    marginRight: 10,
+    backgroundColor: "#007bff",
+    color: "#fff",
+    border: "none",
+    borderRadius: 5,
+    cursor: "pointer"
+  },
+  saveBtn: {
+    padding: "10px 20px",
+    backgroundColor: "#28a745",
+    color: "#fff",
+    border: "none",
+    borderRadius: 5,
+    cursor: "pointer"
+  },
+  canvas: {
+    height: "400px",
+    border: "1px solid #ddd",
+    borderRadius: 10
+  }
+};
