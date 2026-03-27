@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:5000/api";
+const BASE_URL = "https://ai-flow-backend-zpb6.onrender.com/api";
 
 export const askAI = async (prompt) => {
   const res = await fetch(`${BASE_URL}/ask-ai`, {
@@ -13,7 +13,7 @@ export const askAI = async (prompt) => {
 };
 
 export const saveFlow = async (prompt, response) => {
-  await fetch("http://localhost:5000/api/save", {
+  await fetch("https://ai-flow-backend-zpb6.onrender.com/api/save", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
